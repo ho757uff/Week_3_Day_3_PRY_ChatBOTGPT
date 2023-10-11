@@ -1,33 +1,45 @@
 require 'pry'
+require 'rubocop'
+require 'http'
+require 'json'
+
+# ---
 require 'dotenv'# Appelle la gem Dotenv
 
-Dotenv.load('.env') # Ceci appelle le fichier .env (situé dans le même dossier que celui d'où tu exécute app.rb)
+Dotenv.load('.env1') # Ceci appelle le fichier .env (situé dans le même dossier que celui d'où tu exécute app.rb)
 # et grâce à la gem Dotenv, on importe toutes les données enregistrées dans un hash ENV
-
-# Il est ensuite très facile d'appeler les données du hash ENV, par exemple là je vais afficher le contenu de la clé TWITTER_API_SECRET
-puts ENV['TWITTER_API_SECRET']
-
-#Autre exemple 
-puts ENV['BEST_WEBSITE_EVER']
+# ---
 
 
+# création de la clé d'api et indication de l'url utilisée.
+api_key = ENV["CHATBOT_API_KEY"]
+# url = "https://api.openai.com/v1/engines/text-babbage-001/completions"
+url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
 
 
+# un peu de json pour faire la demande d'autorisation d'utilisation à l'api OpenAI
+headers = {
+  "Content-Type" => "application/json",
+  "Authorization" => "Bearer #{api_key}"
+}
 
+# un peu de json pour envoyer des informations directement à l'API
+data = {
+  "prompt" => "C'est quoi le meilleur parfum de glace ?",
+  "max_tokens" => 50,
+  "temperature" => 0.8
+}
 
+# une partie un peu plus complexe :
+# - cela permet d'envoyer les informations en json à ton url
+# # - puis de récupéré la réponse puis de séléctionner spécifiquement le texte rendu
+response = HTTP.post(url, headers: headers, body: data.to_json)
+response_body = JSON.parse(response.body.to_s)
 
+response_string = response_body['choices'][0]['text'].strip
 
+puts response_string
 
-
-# def multiply_by_6(var) #définition d'une méthode multipliant par 6 en 2 étapes
-#   var = var * 2
-#   binding.pry # On lance PRY au milieu de la méthode
-#   var = var * 3
-#   return var
-#   end
-  
-#   multiply_by_6(5) # j'exécute la méthode sur la valeur 5
-
-
-
-
+# # ligne qui permet d'envoyer l'information sur ton terminal
+# puts "Voici 5 parfums de glace :"
+# puts response_string
