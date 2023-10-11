@@ -1,17 +1,7 @@
-require_relative '../lib/00_hello'
+require_relative '../lib/app_test'
 
-describe "the hello function" do
-  it "says hello" do
-    expect(hello).to eq("Hello!")
-  end
-end
-
-describe "the greet function" do
-  it "says hello to someone" do
-    expect(greet("Alice")).to eq("Hello, Alice!")
-  end
-
-  it "says hello to someone else" do
-    expect(greet("Bob")).to eq("Hello, Bob!")
+describe "the login_openai method" do
+  it "should return response, and response is not nil" do
+    expect(login_openai).not_to be_nil
   end
 end

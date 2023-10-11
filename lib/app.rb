@@ -7,14 +7,13 @@ require 'json'
 require 'dotenv'# Appelle la gem Dotenv
 
 Dotenv.load('.env1') # Ceci appelle le fichier .env (situé dans le même dossier que celui d'où tu exécute app.rb)
-# et grâce à la gem Dotenv, on importe toutes les données enregistrées dans un hash ENV
-# ---
+                     # et grâce à la gem Dotenv, on importe toutes les données enregistrées dans un hash ENV
 
 
 # création de la clé d'api et indication de l'url utilisée.
 api_key = ENV["CHATBOT_API_KEY"]
-# url = "https://api.openai.com/v1/engines/text-babbage-001/completions"
-url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
+url = "https://api.openai.com/v1/engines/text-babbage-001/completions"
+# url = "https://api.openai.com/v1/engines/text-davinci-003/completions"
 
 
 # un peu de json pour faire la demande d'autorisation d'utilisation à l'api OpenAI
@@ -25,8 +24,10 @@ headers = {
 
 # un peu de json pour envoyer des informations directement à l'API
 data = {
-  "prompt" => "C'est quoi le meilleur parfum de glace ?",
-  "max_tokens" => 50,
+  "prompt" => "5 types de minerai :",
+  "max_tokens" => 10,
+  "n" => 1,
+  # "stop" => ["\n"],
   "temperature" => 0.8
 }
 
